@@ -26,7 +26,6 @@ jobs:
         - imageicon
         - imageview
         - imageviewer
-        - img
         - linklabel
         - listbox
         - listbox_ownerdrawing
