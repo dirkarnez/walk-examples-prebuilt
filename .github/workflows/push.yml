@@ -1,9 +1,9 @@
 name: golang-build-actions-workflow
 on:
   push:
-    # # Sequence of patterns matched against refs/tags
-    # tags:
-    #   - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
       
 permissions:
     contents: write
@@ -33,7 +33,7 @@ jobs:
           go mod init github.com/dirkarnez/databinding &&^
           go get github.com/lxn/walk &&^
           go get github.com/lxn/walk/declarative &&^
-          go get github.com/akavel/rsrc &&^
+          go install github.com/akavel/rsrc &&^
           rsrc -manifest databinding.exe.manifest -o rsrc.syso &&^
           go build -ldflags="-H windowsgui" &&^
           dir
