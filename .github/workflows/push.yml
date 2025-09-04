@@ -12,30 +12,37 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [ windows-latest ] #, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          repository: 'lxn/walk'
+          path: 'walk'
       
       - name: Setup go
         uses: actions/setup-go@v2
         with:
           go-version: '1.21.0' # The Go version to download (if necessary) and use.
           
-      - run: go get .
+      - working-directory: 'walk/examples/databinding'
+        shell: cmd
+        run: |
+          go mod init github.com/dirkarnez/databinding &&^
+          go get . init &&^
+          go build &&^
+          dir
       
-      - run: go build
-      
-      - name: Archive Release
-        uses: thedoctor0/zip-release@master
-        with:
-          type: 'zip'
-          path: ${{ github.event.repository.name }}*
-          filename: "${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.os }}.zip"
+      # - name: Archive Release
+      #   uses: thedoctor0/zip-release@master
+      #   with:
+      #     type: 'zip'
+      #     path: ${{ github.event.repository.name }}*
+      #     filename: "${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.os }}.zip"
           
-      - name: Release prebuilt
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.os }}.zip"
-          allowUpdates: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Release prebuilt
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: "${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.os }}.zip"
+      #     allowUpdates: true
+      #     token: ${{ secrets.GITHUB_TOKEN }}
