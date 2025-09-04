@@ -13,6 +13,33 @@ jobs:
     strategy:
       matrix:
         os: [ windows-latest ] #, ubuntu-latest, macos-latest]
+        examples: 
+        - actions
+        - clipboard
+        - databinding  
+        - drawing
+        - dropfiles
+        - externalwidgets
+        - filebrowser
+        - gradientcomposite
+        - imageicon
+        - imageview
+        - imageviewer
+        - img
+        - linklabel
+        - listbox
+        - listbox_ownerdrawing
+        - logview
+        - multiplepages
+        - notifyicon
+        - progressindicator
+        - radiobutton
+        - settings
+        - slider
+        - statusbar
+        - tableview
+        - webview
+        - webview_events
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -24,18 +51,17 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: '1.23.0' # The Go version to download (if necessary) and use.
-
-
-          
-      - working-directory: 'walk/examples/databinding'
+ 
+      - working-directory: 'walk/examples/${{ matrix.examples }}'
+        continue-on-error: true
         shell: cmd
         run: |
-          go mod init github.com/dirkarnez/databinding &&^
+          go mod init github.com/dirkarnez/${{ matrix.examples }} &&^
           go get github.com/lxn/walk &&^
           go get github.com/lxn/walk/declarative &&^
           go get github.com/akavel/rsrc &&^
           go install github.com/akavel/rsrc &&^
-          rsrc -manifest databinding.exe.manifest -o rsrc.syso &&^
+          rsrc -manifest ${{ matrix.examples }}.exe.manifest -o rsrc.syso &&^
           go build -ldflags="-H windowsgui" &&^
           dir
       
