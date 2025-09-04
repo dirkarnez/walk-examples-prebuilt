@@ -24,6 +24,8 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: '1.23.0' # The Go version to download (if necessary) and use.
+
+
           
       - working-directory: 'walk/examples/databinding'
         shell: cmd
@@ -31,19 +33,21 @@ jobs:
           go mod init github.com/dirkarnez/databinding &&^
           go get github.com/lxn/walk &&^
           go get github.com/lxn/walk/declarative &&^
-          go build &&^
+          go get github.com/akavel/rsrc &&^
+          rsrc -manifest databinding.exe.manifest -o rsrc.syso &&^
+          go build -ldflags="-H windowsgui" &&^
           dir
       
-      # - name: Archive Release
-      #   uses: thedoctor0/zip-release@master
-      #   with:
-      #     type: 'zip'
-      #     path: ${{ github.event.repository.name }}*
-      #     filename: "${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.os }}.zip"
+      - name: Archive Release
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          directory: 'walk/examples' 
+          filename: "${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.os }}.zip"
           
-      # - name: Release prebuilt
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     artifacts: "${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.os }}.zip"
-      #     allowUpdates: true
-      #     token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release prebuilt
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "walk/examples/${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.os }}.zip"
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
