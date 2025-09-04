@@ -33,6 +33,7 @@ jobs:
           go mod init github.com/dirkarnez/databinding &&^
           go get github.com/lxn/walk &&^
           go get github.com/lxn/walk/declarative &&^
+          go get github.com/akavel/rsrc &&^
           go install github.com/akavel/rsrc &&^
           rsrc -manifest databinding.exe.manifest -o rsrc.syso &&^
           go build -ldflags="-H windowsgui" &&^
