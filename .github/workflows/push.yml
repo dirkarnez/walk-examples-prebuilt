@@ -70,12 +70,12 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          directory: 'walk/examples' 
-          filename: "${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.os }}.zip"
+          directory: 'walk/examples/${{ matrix.examples }}' 
+          filename: "walk-examples-${{ matrix.examples }}-${{ github.ref_name }}-${{ matrix.os }}.zip"
           
       - name: Release prebuilt
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "walk/examples/${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.os }}.zip"
+          artifacts: "walk/examples/${{ matrix.examples }}/walk-examples-${{ matrix.examples }}-${{ github.ref_name }}-${{ matrix.os }}.zip"
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
