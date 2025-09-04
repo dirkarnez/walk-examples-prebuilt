@@ -29,6 +29,8 @@ jobs:
         shell: cmd
         run: |
           go mod init github.com/dirkarnez/databinding &&^
+          go get github.com/lxn/walk &&^
+          go get github.com/lxn/walk/declarative &&^
           go build &&^
           dir
       
